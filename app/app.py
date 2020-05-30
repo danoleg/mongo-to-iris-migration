@@ -16,7 +16,6 @@ def home():
 
 @app.route('/<string:collection_name>')
 def info(collection_name):
-    # mongo_to_iris('restaurants')
     client = pymongo.MongoClient("mongodb", 27019)
     db = client.demo
 
