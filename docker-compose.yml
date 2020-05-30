@@ -1,0 +1,43 @@
+version: '3.7'
+
+services:
+    mongodb:
+      image: mongo
+      command: mongod --port 27019
+      ports:
+        - "27019:27019"
+
+    mongo-seed:
+      image: mongo
+      links:
+        - mongodb
+      volumes:
+        - ./mongo-seed:/mongo-seed
+      command:
+        'bash -c "mongoimport --host mongodb --port 27019 --db demo --collection restaurants --type json --file /mongo-seed/seed.json --jsonArray"'
+
+    iris:
+      build:
+        context: ./iris
+        dockerfile: Dockerfile
+      restart: always
+      hostname: iris
+      command: --password-file password.txt
+      ports:
+        - 51773:51773
+        - 52773:52773
+        - 53773:53773
+
+    app:
+      build: ./app
+      restart: always
+      volumes:
+        - ./app:/app
+      depends_on:
+        - iris
+        - mongo-seed
+      links:
+        - iris
+        - mongo-seed
+      ports:
+        - 8011:8011
