@@ -1,5 +1,34 @@
-# About application
+
+## About application
 Using this application, you can transfer data from the MongoDB collections to the IRIS globals. When data is migrated, a global of the same name is created. The data structure of the collection is reproduced in the IRIS global.
+
+For example, if the first MongoDB document is like this:
+
+```json
+{
+    "name": "John",
+    "info": {
+        "age": 25,
+        "gender": "male" 
+    },
+    "emails": [
+        "john.1@example.email",
+        "john.2@example.email",
+        "john.3@example.email"
+    ]
+}
+```
+
+In IRIS it will be:
+
+| path                                | value                |
+|-------------------------------------|----------------------|
+| ^collection_name(0,"name")          | John                 |
+| ^collection_name(0,"info","age")    | 25                   |
+| ^collection_name(0,"info","gender") | male                 |
+| ^collection_name(0,"emails", 0)     | john.1@example.email |
+| ^collection_name(0,"emails", 1)     | john.2@example.email |
+| ^collection_name(0,"emails", 2)     | john.3@example.email |
 
 This application uses nativeAPI to work with IRIS.
 ## How to use it
