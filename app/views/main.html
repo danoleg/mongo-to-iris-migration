@@ -1,45 +1,49 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{data['collection_name']}}</title>
-    <style>
-        .btn-bd-primary {
-            margin: 3px;
-            display: inline-block;
-            font-weight: 600;
-            color: #fff;
-            background-color: #7952b3;
-            border-color: #7952b3;
-            text-align: center;
-            vertical-align: middle;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            padding: .375rem .75rem;
-            font-size: 1rem;
-            line-height: 1.5;
-            border-radius: .25rem;
-            transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-        }
-    </style>
-</head>
-<body>
-    <h2>Collection: {{data['collection_name']}}</h2>
-    <form method="get" action="/{{data['collection_name']}}/move-mongo-to-iris-globals" style="float:left">
-        <button  type="submit" class="btn-bd-primary">Move data to IRIS</button>
-    </form>
-    <form method="get" action="/{{data['collection_name']}}/kill-iris-global">
-        <button type="submit" class="btn-bd-primary">Remove data from IRIS</button>
-    </form>
-    <p><b>Number of documents in MongoDB collection:</b> {{data['docs_count']}}</p>
-    <p><b>Number of root nodes in IRIS global:</b> {{data['iris_root_nodes_count']}}</p>
-    <p><b>Example document from the MongoDB collection:</b> <pre>{{data['first_doc']}}</pre></p>
+{% extends 'base.html' %}
+
+{% block title %}{{data['collection_name']}}{% endblock %}
 
 
-</body>
-</html>
+{% block content %}
+<h2>Collection: {{data['collection_name']}}</h2>
+
+<form method="get" action="/mongodb/{{data['collection_name']}}/move-mongo-to-iris-globals" style="float:left">
+    <button type="submit" class="btn btn-primary m-1 mb-2">Move data to IRIS</button>
+</form>
+
+<form method="get" action="/mongodb/{{data['collection_name']}}/kill-iris-global">
+    <button type="submit" class="btn btn-warning m-1 mb-2">Remove data from IRIS</button>
+</form>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <p><b>Number of documents in MongoDB collection:</b> {{data['docs_count']}}</p>
+                <p>
+                    <b>Example document from the MongoDB collection:</b>
+                    <pre style="max-height: 70vh">{{data['first_doc']}}</pre>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <p><b>Number of root nodes in IRIS global:</b> {{data['iris_root_nodes_count']}}</p>
+
+                {% if data['iris_data'] is defined %}
+                <p><b>Imported example document in IRIS:</b></p>
+                    <div style="max-height: 70vh; overflow: scroll; margin-bottom: 1rem;">
+                    {% with %}
+                        {% set iris_data = data['iris_data'] %}
+                        {% set is_first = false %}
+                        {% set global_name = data['collection_name']%}
+                        {% include "partials/iris_data_table.html" %}
+                    {% endwith %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

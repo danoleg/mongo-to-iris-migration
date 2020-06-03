@@ -1,4 +1,5 @@
 import irisnative
+from contextlib import contextmanager
 
 
 class Iris(object):
@@ -10,8 +11,8 @@ class Iris(object):
         username = "_SYSTEM"
         password = "demopass"
 
-        connection = irisnative.createConnection(ip, port, namespace, username, password)
-        self.dbnative = irisnative.createIris(connection)
+        self.connection = irisnative.createConnection(ip, port, namespace, username, password)
+        self.dbnative = irisnative.createIris(self.connection)
 
     def set(self, value: any, global_name: str, *nodes):
         """
@@ -52,3 +53,20 @@ class Iris(object):
         """
         iter = self.dbnative.iterator(global_name)
         return sum(1 for _ in iter.items())
+
+    def close(self):
+        """
+        Close IRIS connection
+        """
+        self.connection.close()
+
+
+@contextmanager
+def iris_connection():
+    # create connection to IRIS
+    connect = Iris()
+    try:
+        yield connect
+    finally:
+        # close connection to IRIS
+        connect.close()
