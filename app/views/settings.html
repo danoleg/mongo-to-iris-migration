@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Settings{% endblock %}
+
+
+{% block content %}
+<h2>Settings</h2>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card center">
+            <div class="card-body">
+                <form action="" method="post">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="title">MongoDB</h5>
+                            <div class="form-group">
+                                <label for="mongo_connection_string">Connection string</label>
+                                <input type="text" class="form-control" id="mongo_connection_string" name="mongo_connection_string" required
+                                       value="{{data['config']['mongo_connection_string']}}">
+                            </div>
+                            <div class="form-group">
+                                <label for="mongo_db">DB name</label>
+                                <input type="text" class="form-control" id="mongo_db" name="mongo_db" required
+                                       value="{{data['config']['mongo_db']}}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h5 class="title">IRIS</h5>
+                            <div class="form-group">
+                                <label for="iris_host">Host</label>
+                                <input type="text" class="form-control" id="iris_host" name="iris_host" required
+                                       value="{{data['config']['iris_host']}}">
+                            </div>
+                            <div class="form-group">
+                                <label for="iris_port">Port</label>
+                                <input type="text" class="form-control" id="iris_port" name="iris_port" required
+                                       value="{{data['config']['iris_port']}}">
+                            </div>
+                            <div class="form-group">
+                                <label for="iris_namespace">Namespace</label>
+                                <input type="text" class="form-control" id="iris_namespace" name="iris_namespace"
+                                       required
+                                       value="{{data['config']['iris_namespace']}}">
+                            </div>
+                            <div class="form-group">
+                                <label for="iris_username">Username</label>
+                                <input type="text" class="form-control" id="iris_username" name="iris_username" required
+                                       value="{{data['config']['iris_username']}}">
+                            </div>
+                            <div class="form-group">
+                                <label for="iris_password">Password</label>
+                                <input type="text" class="form-control" id="iris_password" name="iris_password" required
+                                       value="{{data['config']['iris_password']}}">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

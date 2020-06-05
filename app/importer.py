@@ -1,5 +1,6 @@
 import pymongo
 
+from flask import current_app
 from helpers.iris import iris_connection
 from helpers.parser import parse_dict
 from helpers.validator import validate_json
@@ -7,8 +8,8 @@ from helpers.validator import validate_json
 
 def mongo_to_iris(collection_name: str):
 
-    client = pymongo.MongoClient("mongodb", 27019)
-    db = client.demo
+    client = pymongo.MongoClient(current_app.config['mongo_connection_string'])
+    db = client[current_app.config['mongo_db']]
 
     if collection_name not in db.list_collection_names():
         return False, None

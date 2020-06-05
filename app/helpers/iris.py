@@ -1,5 +1,6 @@
 import irisnative
 from contextlib import contextmanager
+from flask import current_app
 
 
 class Iris(object):
@@ -11,8 +12,8 @@ class Iris(object):
         username = "_SYSTEM"
         password = "demopass"
 
-        self.connection = irisnative.createConnection(ip, port, namespace, username, password)
-        self.dbnative = irisnative.createIris(self.connection)
+        connection = irisnative.createConnection(ip, port, namespace, username, password)
+        self.dbnative = irisnative.createIris(connection)
 
     def set(self, value: any, global_name: str, *nodes):
         """

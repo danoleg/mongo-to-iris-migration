@@ -9,11 +9,19 @@ from importer import mongo_to_iris, json_to_iris
 
 app = Flask(__name__, template_folder='views')
 
+app.config['mongo_connection_string'] = "mongodb://mongodb:27019"
+app.config['mongo_db'] = "demo"
+app.config['iris_host'] = "iris"
+app.config['iris_port'] = 51773
+app.config['iris_namespace'] = "USER"
+app.config['iris_username'] = "_SYSTEM"
+app.config['iris_password'] = "demopass"
+
 
 @app.route('/')
 def home():
-    client = pymongo.MongoClient("mongodb", 27019)
-    db = client.demo
+    client = pymongo.MongoClient(app.config['mongo_connection_string'])
+    db = client[app.config['mongo_db']]
     data = {
         "collections": db.list_collection_names()
     }
@@ -22,8 +30,8 @@ def home():
 
 @app.route('/mongodb/<string:collection_name>')
 def mongo_collection_info(collection_name):
-    client = pymongo.MongoClient("mongodb", 27019)
-    db = client.demo
+    client = pymongo.MongoClient(app.config['mongo_connection_string'])
+    db = client[app.config['mongo_db']]
 
     if collection_name not in db.list_collection_names():
         return f"Collection '{collection_name}' not found"
@@ -104,6 +112,35 @@ def json_import():
             }
 
     return render_template('import_json.html', data=data)
+
+
+@app.route('/settings', methods=['GET', 'POST'])
+def settings():
+
+    if request.method == 'POST':
+
+        app.config['mongo_connection_string'] = request.form.get('mongo_connection_string')
+        app.config['mongo_db'] = request.form.get('mongo_db')
+        app.config['iris_host'] = request.form.get('iris_host')
+        app.config['iris_port'] = int(request.form.get('iris_port'))
+        app.config['iris_namespace'] = request.form.get('iris_namespace')
+        app.config['iris_username'] = request.form.get('iris_username')
+        app.config['iris_password'] = request.form.get('iris_password')
+
+    data = {
+        "config": app.config
+    }
+    return render_template('settings.html', data=data)
+
+
+@app.errorhandler(500)
+def handle_500(e):
+    return render_template('error.html'), 200
+
+
+@app.errorhandler(404)
+def not_found(e):
+    return render_template('error.html'), 404
 
 
 if __name__ == "__main__":
