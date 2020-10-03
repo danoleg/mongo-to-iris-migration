@@ -41,3 +41,15 @@ services:
         - mongo-seed
       ports:
         - 8011:8011
+
+    client:
+      build: ./client
+      restart: always
+      volumes:
+        - ./client:/client
+      depends_on:
+        - app
+      links:
+        - app
+      ports:
+        - 8080:8080

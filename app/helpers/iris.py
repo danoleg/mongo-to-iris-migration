@@ -6,14 +6,14 @@ from flask import current_app
 class Iris(object):
 
     def __init__(self):
-        ip = "iris"
-        port = 51773
-        namespace = "USER"
-        username = "_SYSTEM"
-        password = "demopass"
+        ip = current_app.config['iris_host']
+        port = current_app.config['iris_port']
+        namespace = current_app.config['iris_namespace']
+        username = current_app.config['iris_username']
+        password = current_app.config['iris_password']
 
-        connection = irisnative.createConnection(ip, port, namespace, username, password)
-        self.dbnative = irisnative.createIris(connection)
+        self.connection = irisnative.createConnection(ip, port, namespace, username, password)
+        self.dbnative = irisnative.createIris(self.connection)
 
     def set(self, value: any, global_name: str, *nodes):
         """

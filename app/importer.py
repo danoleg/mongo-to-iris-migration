@@ -17,16 +17,19 @@ def mongo_to_iris(collection_name: str):
     collection = db[collection_name]
     cursor = collection.find({})
     i = 0
+    iris_first_node = []
 
     with iris_connection() as iris:
         for document in cursor:
             document['_id'] = str(document['_id'])
             iris_comp_data = parse_dict(document)
+            if i == 0:
+                iris_first_node = iris_comp_data
             for item in iris_comp_data:
                 path_list = [i]+item['path_list']
                 iris.set(item['value'], collection_name, *path_list)
             i += 1
-        return True, iris_comp_data[0]
+        return True, iris_first_node
 
 
 def json_to_iris(input_data: str, global_name: str) -> tuple:
