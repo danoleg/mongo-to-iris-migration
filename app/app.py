@@ -9,13 +9,6 @@ from helpers.encoder import DateTimeEncoder
 from helpers.iris import iris_connection
 from helpers.parser import parse_dict
 from importer import mongo_to_iris, json_to_iris
-import sentry_sdk
-from sentry_sdk.integrations.flask import FlaskIntegration
-sentry_sdk.init(
-    dsn="https://1179df0b79fa4fb69031b9215b31f5c8@o324950.ingest.sentry.io/5449307",
-    integrations=[FlaskIntegration()],
-    traces_sample_rate=1.0
-)
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"*": {"origins": "*"}})
