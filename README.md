@@ -56,3 +56,5 @@ To open collection import manager click button on collection card. On this page,
 To start migration click on button and wait few seconds. After finishing the page will reload with updated information.
 
 In sidebar you can switch to the JSON importer. It's also very easy to use. Just put your JSON to the textarea and click on the import button.
+
+In the settings, you can connect a remote database to use the application as a tool.

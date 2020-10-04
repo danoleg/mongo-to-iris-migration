@@ -1,7 +1,7 @@
 import json
-
 import pymongo
 import ssl
+
 from flask_restful import Api, Resource, reqparse
 from flask import Flask, redirect, render_template, request, url_for
 from flask_cors import CORS
