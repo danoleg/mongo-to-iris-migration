@@ -45,8 +45,11 @@ It is very simple. To start the application, clone project:
  ```
 $ git clone https://github.com/danoleg/mongo-to-iris-migration
 ```
-And run the command:
+And run the commands:
 ```
+$ cd client
+$ npm install
+$ cd ..
 $ docker-compose up -d
 ```
 
