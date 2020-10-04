@@ -50,7 +50,7 @@ And run the command:
 $ docker-compose up -d
 ```
 
-By url http://127.0.0.1:8011 will open a demo page with list of MongoDB collections. 
+By url http://127.0.0.1:8080 will open a demo page with list of MongoDB collections. 
 
 To open collection import manager click button on collection card. On this page, you can migrate data or clear IRIS.
 To start migration click on button and wait few seconds. After finishing the page will reload with updated information.
