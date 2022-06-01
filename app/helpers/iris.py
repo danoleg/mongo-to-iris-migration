@@ -5,12 +5,15 @@ from flask import current_app
 
 class Iris(object):
 
-    def __init__(self):
-        ip = current_app.config['iris_host']
-        port = current_app.config['iris_port']
-        namespace = current_app.config['iris_namespace']
-        username = current_app.config['iris_username']
-        password = current_app.config['iris_password']
+    def __init__(self, *connection):
+        if connection:
+            ip, port, namespace, username, password = connection
+        else:
+            ip = current_app.config['iris_host']
+            port = current_app.config['iris_port']
+            namespace = current_app.config['iris_namespace']
+            username = current_app.config['iris_username']
+            password = current_app.config['iris_password']
 
         self.connection = irisnative.createConnection(ip, port, namespace, username, password)
         self.dbnative = irisnative.createIris(self.connection)
@@ -63,9 +66,9 @@ class Iris(object):
 
 
 @contextmanager
-def iris_connection():
+def iris_connection(*connection):
     # create connection to IRIS
-    connect = Iris()
+    connect = Iris(*connection)
     try:
         yield connect
     finally:

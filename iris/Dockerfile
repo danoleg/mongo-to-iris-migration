@@ -1,4 +1,4 @@
-ARG IMAGE=intersystemsdc/iris-community:2020.2.0.196.0-zpm
+ARG IMAGE=intersystemsdc/iris-community:2021.1.0.215.3-zpm
 FROM $IMAGE
 
 COPY ./password.txt .

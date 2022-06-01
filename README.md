@@ -58,6 +58,12 @@ By url http://127.0.0.1:8080 will open a demo page with list of MongoDB collecti
 To open collection import manager click button on collection card. On this page, you can migrate data or clear IRIS.
 To start migration click on button and wait few seconds. After finishing the page will reload with updated information.
 
+![image](https://user-images.githubusercontent.com/31770269/171503435-b8761391-6a22-4e25-8070-4515c54b742c.png)
+
 In sidebar you can switch to the JSON importer. It's also very easy to use. Just put your JSON to the textarea and click on the import button.
 
-In the settings, you can connect a remote database to use the application as a tool.
+![image](https://user-images.githubusercontent.com/31770269/171499785-32cd33d8-3cc6-451f-92ab-ecbd5d784630.png)
+
+In the settings, you can connect a remote databases to use the application as a tool.
+
+![image](https://user-images.githubusercontent.com/31770269/171499479-865b88dd-88db-42c8-be84-2630308d1e52.png)

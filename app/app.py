@@ -17,7 +17,7 @@ api = Api(app)
 app.config['mongo_connection_string'] = "mongodb://mongodb:27019"
 app.config['mongo_db'] = "demo"
 app.config['iris_host'] = "iris"
-app.config['iris_port'] = 51773
+app.config['iris_port'] = 1972
 app.config['iris_namespace'] = "USER"
 app.config['iris_username'] = "_SYSTEM"
 app.config['iris_password'] = "demopass"
@@ -57,13 +57,13 @@ class MongoCollection(Resource):
 
             data = {
                 "collection_name": collection_name,
-                "docs_count": collection.count()
+                "docs_count": collection.count_documents({})
             }
 
             with iris_connection() as iris:
                 data['iris_root_nodes_count'] = iris.count_root_nodes(collection_name)
 
-            if collection.count() > 0:
+            if collection.count_documents({}) > 0:
                 first_doc = collection.find_one()
                 if '_id' in first_doc:
                     first_doc['_id'] = str(first_doc['_id'])
@@ -173,6 +173,18 @@ class MongoDBSettings(Resource):
         post_parser.add_argument('mongo_connection_string')
         post_parser.add_argument('mongo_db')
         args = post_parser.parse_args()
+
+        try:
+            client = pymongo.MongoClient(args.mongo_connection_string)
+            db = client[args.mongo_db]
+            cursor = db.command({"listCollections": 1.0})
+        except Exception as e:
+            data = {
+                "result": "Error",
+                "details": str(e)
+            }
+            return data
+
         app.config['mongo_connection_string'] = args.mongo_connection_string
         app.config['mongo_db'] = args.mongo_db
 
@@ -191,6 +203,18 @@ class IRISSettings(Resource):
         post_parser.add_argument('iris_username')
         post_parser.add_argument('iris_password')
         args = post_parser.parse_args()
+
+        try:
+            connection = args.iris_host, int(args.iris_port), args.iris_namespace, args.iris_username, args.iris_password
+            with iris_connection(*connection) as iris:
+                pass
+        except Exception as e:
+            data = {
+                "result": "Error",
+                "details": str(e)
+            }
+            return data
+
         app.config['iris_host'] = args.iris_host
         app.config['iris_port'] = int(args.iris_port)
         app.config['iris_namespace'] = args.iris_namespace

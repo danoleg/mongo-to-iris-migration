@@ -42,6 +42,12 @@
             </md-field>
         </div>
         <md-dialog-alert :md-active.sync="saved_success" md-content="Saved successfully" md-confirm-text="OK" />
+        <md-dialog-alert :md-active.sync="saved_error" :md-content="error_message" md-title="Error" md-confirm-text="OK" />
+
+        <md-dialog :md-active.sync="processing">
+          <md-progress-spinner style="margin:0 auto;" md-mode="indeterminate"></md-progress-spinner>
+          <div style="text-align: center">Processing...</div>
+        </md-dialog>
     </div>
 
 </template>
@@ -59,7 +65,10 @@
                 iris_namespace: "",
                 iris_username: "",
                 iris_password: "",
-                saved_success: false
+                saved_success: false,
+                saved_error: false,
+                error_message: "",
+                processing: false
             };
 
         },
@@ -83,11 +92,18 @@
                     mongo_db: this.mongo_db
                 };
                 let that = this;
+                that.processing = true;
                 axios.post('http://127.0.0.1:8011/settings/mongodb', this.formdata).then(
                     function (response) {
-                        that.form_error = response.data.message;
-                        that.iris_data = response.data.iris_data;
-                        that.saved_success = true;
+                      that.processing = false;
+                      that.form_error = response.data.message;
+                      that.iris_data = response.data.iris_data;
+                        if(response.data.result === 'Error'){
+                          that.saved_error = true;
+                          that.error_message = response.data.details
+                        }else{
+                          that.saved_success = true;
+                        }
                     });
 
             },
@@ -100,11 +116,19 @@
                     iris_password: this.iris_password
                 };
                 let that = this;
+                that.processing = true;
                 axios.post('http://127.0.0.1:8011/settings/iris', this.formdata).then(
                     function (response) {
-                        that.form_error = response.data.message;
-                        that.iris_data = response.data.iris_data;
-                        that.saved_success = true;
+                      that.processing = false;
+                      that.form_error = response.data.message;
+                      that.iris_data = response.data.iris_data;
+                        if(response.data.result === 'Error'){
+                          that.saved_error = true;
+                          that.error_message = response.data.details
+                        }else{
+                          that.saved_success = true;
+                        }
+
                     });
 
             },
