@@ -36,18 +36,21 @@ app.config['upload_folder'] = 'static'
 
 class MongoCollections(Resource):
     def get(self):
-        client = pymongo.MongoClient(app.config['mongo_connection_string'])
-        db = client[app.config['mongo_db']]
+        try:
+            client = pymongo.MongoClient(app.config['mongo_connection_string'])
+            db = client[app.config['mongo_db']]
 
-        collections = []
+            collections = []
 
-        cursor = db.command({"listCollections": 1.0})
-        for collection in cursor['cursor']['firstBatch']:
-            c = db[collection['name']]
-            collections.append({
-                "name": collection['name'],
-                "count": c.count_documents({})
-            })
+            cursor = db.command({"listCollections": 1.0})
+            for collection in cursor['cursor']['firstBatch']:
+                c = db[collection['name']]
+                collections.append({
+                    "name": collection['name'],
+                    "count": c.count_documents({})
+                })
+        except Exception:
+            collections = []
 
         data = {
             "collections": collections
@@ -318,27 +321,30 @@ class MongoToIris(Resource):
 
 class PostgesTables(Resource):
     def get(self):
-        conn = psycopg2.connect(
-            dbname=app.config['postgres_db'],
-            user=app.config['postgres_username'],
-            password=app.config['postgres_password'],
-            host=app.config['postgres_host'],
-            port=app.config['postgres_port'],
-        )
+        try:
+            conn = psycopg2.connect(
+                dbname=app.config['postgres_db'],
+                user=app.config['postgres_username'],
+                password=app.config['postgres_password'],
+                host=app.config['postgres_host'],
+                port=app.config['postgres_port'],
+            )
 
-        cur = conn.cursor()
-        cur.execute("SELECT tablename FROM pg_catalog.pg_tables where schemaname = 'public';")
-        d = cur.fetchall()
-        # field_names = [i[0] for i in cur.description]
+            cur = conn.cursor()
+            cur.execute("SELECT tablename FROM pg_catalog.pg_tables where schemaname = 'public';")
+            tables = cur.fetchall()
+
+            cur.close()
+            conn.close()
+
+        except Exception:
+            tables = []
+
         collections = []
-        with iris_connection() as iris:
-            for i in d:
-                collections.append({
-                    "name": i[0]
-                })
-
-        cur.close()
-        conn.close()
+        for t in tables:
+            collections.append({
+                "name": t[0]
+            })
 
         data = {
             "collections": collections

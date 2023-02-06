@@ -55,7 +55,7 @@
             <md-input v-model="postgres_port"></md-input>
           </md-field>
           <md-field>
-            <label>Namespace</label>
+            <label>DB name</label>
             <md-input v-model="postgres_db"></md-input>
           </md-field>
           <md-field>
