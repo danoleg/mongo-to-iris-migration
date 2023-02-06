@@ -60,12 +60,24 @@ By url http://127.0.0.1:8080 will open a demo page with list of MongoDB collecti
 To open collection import manager click button on collection card. On this page, you can migrate data or clear IRIS.
 To start migration click on button and wait few seconds. After finishing the page will reload with updated information.
 
-![image](https://user-images.githubusercontent.com/31770269/171503435-b8761391-6a22-4e25-8070-4515c54b742c.png)
+![image](https://user-images.githubusercontent.com/31770269/216854586-b92c12e4-d392-4fe4-972f-5ea37530b579.png)
+
+
+Importing data from PostgreSQL is similar to MongoDB, only tables instead of collections:
+
+![image](https://user-images.githubusercontent.com/31770269/216854753-433ae03a-a3b9-4b75-a826-d416980c1800.png)
+
 
 In sidebar you can switch to the JSON importer. It's also very easy to use. Just put your JSON to the textarea and click on the import button.
 
-![image](https://user-images.githubusercontent.com/31770269/171499785-32cd33d8-3cc6-451f-92ab-ecbd5d784630.png)
+![image](https://user-images.githubusercontent.com/31770269/216854418-1404fb0d-9abe-4ba3-94e9-37df28841d98.png)
+
+
+Also you can download IRIS global in json file just in one click.
+
+![image](https://user-images.githubusercontent.com/31770269/216854511-d8ae1c07-51d6-4c75-ac53-dcae687f0d95.png)
+
 
 In the settings, you can connect remote databases to use the application as a tool.
 
-![image](https://user-images.githubusercontent.com/31770269/171499479-865b88dd-88db-42c8-be84-2630308d1e52.png)
+![image](https://user-images.githubusercontent.com/31770269/216854363-b7190946-2b23-4151-8e6e-ff2c61e1e738.png)
