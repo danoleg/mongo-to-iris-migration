@@ -1,91 +1,23 @@
 version: '3.7'
 
 services:
-    mongodb:
-      image: mongo
-      command: mongod --port 27019
-      ports:
-        - "27019:27019"
+  app:
+    build: ./app
+    restart: always
+    volumes:
+      - ./app:/app
+    ports:
+      - 8011:8011
 
-    mongo-seed:
-      image: mongo
-      links:
-        - mongodb
-      volumes:
-        - ./mongo-seed:/mongo-seed
-      command:
-        'bash -c "mongoimport --host mongodb --port 27019 --db demo --collection restaurants --type json --file /mongo-seed/seed.json --jsonArray
-        && mongoimport --host mongodb --port 27019 --db demo --collection hospitals --type json --file /mongo-seed/seed-hospitals.json --jsonArray"'
-
-    iris:
-      build:
-        context: ./iris
-        dockerfile: Dockerfile
-      restart: always
-      hostname: iris
-      command: --password-file password.txt
-      ports:
-        - 1972:1972
-        - 51773:51773
-        - 52773:52773
-        - 53773:53773
-      expose:
-        - "1972"
-
-    postgres:
-      restart: always
-      image: postgres:14.4-alpine
-      container_name: pgdb
-      environment:
-          - POSTGRES_USER=postgres
-          - POSTGRES_PASSWORD=postgres
-      volumes:
-        - pg-data:/var/lib/postgresql/data
-        - ./sql/pg_create_tables.sql:/docker-entrypoint-initdb.d/pg_create_tables.sql
-      ports:
-        - "5439:5432"
-
-#    pgadmin:
-#      image: dpage/pgadmin4
-#      container_name: pgadmin4_container
-#      restart: always
-#      ports:
-#        - "5050:80"
-#      environment:
-#        PGADMIN_DEFAULT_EMAIL: demo@pg.com
-#        PGADMIN_DEFAULT_PASSWORD: admin
-#      volumes:
-#        - pgadmin-data:/var/lib/pgadmin
-
-    app:
-      build: ./app
-      restart: always
-      volumes:
-        - ./app:/app
-      depends_on:
-        - iris
-        - mongo-seed
-        - postgres
-      links:
-        - iris
-        - mongo-seed
-        - postgres
-      ports:
-        - 8011:8011
-
-    client:
-      build: ./client
-      restart: always
-      volumes:
-        - ./client:/client
-        - /client/node_modules
-      depends_on:
-        - app
-      links:
-        - app
-      ports:
-        - 8080:8080
-
-volumes:
-  pg-data:
-#  pgadmin-data:
+  client:
+    build: ./client
+    restart: always
+    volumes:
+      - ./client:/client
+      - /client/node_modules
+    depends_on:
+      - app
+    links:
+      - app
+    ports:
+      - 8080:8080

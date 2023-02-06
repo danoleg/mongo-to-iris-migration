@@ -331,11 +331,10 @@ class PostgesTables(Resource):
         d = cur.fetchall()
         # field_names = [i[0] for i in cur.description]
         collections = []
-        with iris_connection() as iris:
-            for i in d:
-                collections.append({
-                    "name": i[0]
-                })
+        for i in d:
+            collections.append({
+                "name": i[0]
+            })
 
         cur.close()
         conn.close()
