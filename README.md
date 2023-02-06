@@ -52,7 +52,16 @@ And run the commands:
 $ cd client
 $ npm install
 $ cd ..
+```
+
+To run application as a tool, without demo databases.
+```
 $ docker-compose up -d
+```
+
+To run demo:
+```
+$ docker-compose -f docker-compose.demo.yml up -d
 ```
 
 By url http://127.0.0.1:8080 will open a demo page with list of MongoDB collections. 
