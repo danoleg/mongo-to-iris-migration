@@ -2,7 +2,7 @@
   <div id="app">
     <md-app style="min-height: 100vh;">
       <md-app-toolbar class="md-primary">
-        <span class="md-title">IRIS import manager</span>
+        <span class="md-title">IRIS Data Migration Manager</span>
       </md-app-toolbar>
 
       <md-app-drawer md-permanent="full">

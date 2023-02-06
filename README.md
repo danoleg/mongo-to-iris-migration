@@ -3,7 +3,9 @@
 This application allows you to import data into IRIS from various sources in a simple way.
 Using this application, you can: 
  - Import JSON data into IRIS globals.
+ - Export IRIS globals to json files.
  - Transfer data from the MongoDB collections to the IRIS globals. 
+ - Transfer data from the PostgreSQL tables to the IRIS globals. 
  
   The data structure of the input data is reproduced in the IRIS global.
  

@@ -58,6 +58,16 @@ class Iris(object):
         iter = self.dbnative.iterator(global_name)
         return sum(1 for _ in iter.items())
 
+    def iterator(self, global_name: str, *keys):
+        """
+        Create or update global node value
+
+        :param value:
+        :param global_name: root global name
+        :param nodes: path to value
+        """
+        return self.dbnative.iterator(global_name, *keys)
+
     def close(self):
         """
         Close IRIS connection

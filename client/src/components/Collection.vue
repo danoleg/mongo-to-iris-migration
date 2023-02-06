@@ -10,7 +10,7 @@
             <br>
             <span class="md-subheading">Collection: {{collection}}</span><br>
             <span class="md-subheading">Collection size: <b>{{docs_count}}</b> documents</span><br><br>
-            <span class="md-subheading">Document example:<br></span>
+            <span class="md-subheading">Document preview:<br></span>
             <tree-view :data="first_doc" :options="{maxDepth: 3}"></tree-view>
 
         </div>
@@ -22,7 +22,7 @@
             <br>
             <span class="md-subheading">Global: ^{{collection}}</span><br>
             <span class="md-subheading">Number of nodes: <b>{{iris_root_nodes_count}}</b></span><br><br>
-            <span class="md-subheading" v-if="iris_root_nodes_count>0">Node data example:</span><br>
+            <span class="md-subheading" v-if="iris_root_nodes_count>0">Node data preview:</span><br>
             <md-table v-if="iris_root_nodes_count>0">
                 <md-table-row>
                     <md-table-head>Node</md-table-head>

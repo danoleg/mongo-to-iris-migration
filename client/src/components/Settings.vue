@@ -41,6 +41,32 @@
                 <md-input type="password" v-model="iris_password"></md-input>
             </md-field>
         </div>
+        <div class="md-layout-item">
+          <md-toolbar :md-elevation="1">
+            <span class="md-title" style="flex: 1">PostgreSQL</span>
+            <md-button class="md-primary" @click="savePostgres">Save</md-button>
+          </md-toolbar>
+          <md-field>
+            <label>Host</label>
+            <md-input v-model="postgres_host"></md-input>
+          </md-field>
+          <md-field>
+            <label>Port</label>
+            <md-input v-model="postgres_port"></md-input>
+          </md-field>
+          <md-field>
+            <label>Namespace</label>
+            <md-input v-model="postgres_db"></md-input>
+          </md-field>
+          <md-field>
+            <label>Username</label>
+            <md-input v-model="postgres_username"></md-input>
+          </md-field>
+          <md-field>
+            <label>Password</label>
+            <md-input type="password" v-model="postgres_password"></md-input>
+          </md-field>
+        </div>
         <md-dialog-alert :md-active.sync="saved_success" md-content="Saved successfully" md-confirm-text="OK" />
         <md-dialog-alert :md-active.sync="saved_error" :md-content="error_message" md-title="Error" md-confirm-text="OK" />
 
@@ -65,6 +91,11 @@
                 iris_namespace: "",
                 iris_username: "",
                 iris_password: "",
+                postgres_host: "",
+                postgres_port: "",
+                postgres_db: "",
+                postgres_username: "",
+                postgres_password: "",
                 saved_success: false,
                 saved_error: false,
                 error_message: "",
@@ -83,6 +114,11 @@
                             that.iris_namespace = response.data.iris_namespace;
                             that.iris_username = response.data.iris_username;
                             that.iris_password = response.data.iris_password;
+                            that.postgres_host = response.data.postgres_host;
+                            that.postgres_port = response.data.postgres_port;
+                            that.postgres_db = response.data.postgres_db;
+                            that.postgres_username = response.data.postgres_username;
+                            that.postgres_password = response.data.postgres_password;
                         });
         },
         methods: {
@@ -132,6 +168,31 @@
                     });
 
             },
+          savePostgres() {
+            this.formdata = {
+              postgres_host: this.postgres_host,
+              postgres_port: this.postgres_port,
+              postgres_db: this.postgres_db,
+              postgres_username: this.postgres_username,
+              postgres_password: this.postgres_password
+            };
+            let that = this;
+            that.processing = true;
+            axios.post('http://127.0.0.1:8011/settings/postgres', this.formdata).then(
+                function (response) {
+                  that.processing = false;
+                  that.form_error = response.data.message;
+                  that.postgres_data = response.data.postgres_data;
+                  if(response.data.result === 'Error'){
+                    that.saved_error = true;
+                    that.error_message = response.data.details
+                  }else{
+                    that.saved_success = true;
+                  }
+
+                });
+
+          },
         }
     }
 </script>

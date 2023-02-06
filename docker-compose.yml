@@ -25,11 +25,37 @@ services:
       hostname: iris
       command: --password-file password.txt
       ports:
+        - 1972:1972
         - 51773:51773
         - 52773:52773
         - 53773:53773
       expose:
-        - "51773"
+        - "1972"
+
+    postgres:
+      restart: always
+      image: postgres:14.4-alpine
+      container_name: pgdb
+      environment:
+          - POSTGRES_USER=postgres
+          - POSTGRES_PASSWORD=postgres
+      volumes:
+        - pg-data:/var/lib/postgresql/data
+        - ./sql/pg_create_tables.sql:/docker-entrypoint-initdb.d/pg_create_tables.sql
+      ports:
+        - "5439:5432"
+
+#    pgadmin:
+#      image: dpage/pgadmin4
+#      container_name: pgadmin4_container
+#      restart: always
+#      ports:
+#        - "5050:80"
+#      environment:
+#        PGADMIN_DEFAULT_EMAIL: demo@pg.com
+#        PGADMIN_DEFAULT_PASSWORD: admin
+#      volumes:
+#        - pgadmin-data:/var/lib/pgadmin
 
     app:
       build: ./app
@@ -39,9 +65,11 @@ services:
       depends_on:
         - iris
         - mongo-seed
+        - postgres
       links:
         - iris
         - mongo-seed
+        - postgres
       ports:
         - 8011:8011
 
@@ -50,9 +78,14 @@ services:
       restart: always
       volumes:
         - ./client:/client
+        - /client/node_modules
       depends_on:
         - app
       links:
         - app
       ports:
         - 8080:8080
+
+volumes:
+  pg-data:
+#  pgadmin-data:
