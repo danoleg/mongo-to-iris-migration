@@ -47,12 +47,6 @@ It is very simple. To start the application, clone project:
  ```
 $ git clone https://github.com/danoleg/mongo-to-iris-migration
 ```
-And run the commands:
-```
-$ cd client
-$ npm install
-$ cd ..
-```
 
 To run application as a tool, without demo databases.
 ```
