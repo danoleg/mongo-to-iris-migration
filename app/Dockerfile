@@ -3,7 +3,6 @@ COPY ./ /app
 WORKDIR /app
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends netcat && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN pip install --upgrade pip
