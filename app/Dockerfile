@@ -2,8 +2,8 @@ FROM python:3.7.3-slim
 COPY ./ /app
 WORKDIR /app
 
-RUN apt-get update && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+#RUN apt-get update && \
+#    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN pip install --upgrade pip
 RUN pip install nativeAPI_wheel/intersystems_irispython-3.2.0-py3-none-any.whl
