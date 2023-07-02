@@ -76,6 +76,12 @@ In sidebar you can switch to the JSON importer. It's also very easy to use. Just
 ![image](https://user-images.githubusercontent.com/31770269/216854418-1404fb0d-9abe-4ba3-94e9-37df28841d98.png)
 
 
+Or import it with JSON file
+
+![image](https://github.com/danoleg/mongo-to-iris-migration/assets/31770269/e1627de9-8d23-4178-aa8f-ed498222e056)
+
+
+
 Also you can download IRIS global in json file just in one click.
 
 ![image](https://user-images.githubusercontent.com/31770269/216854511-d8ae1c07-51d6-4c75-ac53-dcae687f0d95.png)
