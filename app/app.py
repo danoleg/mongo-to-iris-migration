@@ -1,6 +1,7 @@
 import json
 import pymongo
 import ssl
+import uuid
 import psycopg2
 
 from flask_restful import Api, Resource, reqparse
@@ -91,16 +92,41 @@ class MongoCollection(Resource):
 
 class ImportJsonFileToIris(Resource):
     def post(self):
-        post_parser = reqparse.RequestParser()
-        post_parser.add_argument('name')
-        post_parser.add_argument('json')
-        args = post_parser.parse_args()
+        try:
+            if request.files.get("file") is None:
+                return {"result": "not file"}
+            # Put here some other checks (security, file length etc...)
+            name = request.form.get('name')
+            print("name", name)
+            f = request.files["file"]
+            # f.save(str(uuid.uuid4()))
+            f.stream.seek(0)
+            content = ""
+            for line in f.stream.readlines():
+                content += line.decode("UTF-8")  # Decode here as needed
 
-        # if file:
-        result = {
-            "result": [args.name,args.json]
-        }
-        return result
+            result, iris_data = json_to_iris(content, name)
+
+            if result:
+                data = {
+                    "status": True,
+                    "message": "Imported successfully",
+                    "global_name": name,
+                    "json_body": json.dumps(json.loads(content)),
+                    "iris_data": iris_data
+                }
+            else:
+                data = {
+                    "status": False,
+                    "message": "Invalid json",
+                    "global_name": name,
+                    "json_body": content,
+                    "iris_data": []
+                }
+
+            return data
+        except Exception as e:
+            return {"status": False, "message": str(e)}
 
 
 class ExportGlobalToJson(Resource):

@@ -14,8 +14,16 @@ def parse_dict(data: dict, path_list=None, res=None) -> list:
         res = []
     if path_list is None:
         path_list = []
-    if isinstance(data, dict):
-        for key, value in data.items():
+
+    new_data = {}
+    if isinstance(data, list):
+        for i, item in enumerate(data):
+            new_data[i] = item
+    else:
+        new_data = data
+
+    if isinstance(new_data, dict):
+        for key, value in new_data.items():
 
             if isinstance(value, list):
                 i = 0
